@@ -1,0 +1,8 @@
+spire:
+  trust_domain: example.com
+  ca:
+    country: US
+    org: "Example Inc."
+
+k8s:
+  cluster_name: spire-envoy-k8s

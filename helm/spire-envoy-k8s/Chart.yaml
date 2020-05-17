@@ -1,0 +1,4 @@
+apiVersion: v1
+name: spire-envoy-k8s
+description: A Helm chart for a SPIRE demo.
+version: 0.1.0
