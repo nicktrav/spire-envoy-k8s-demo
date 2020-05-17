@@ -189,6 +189,27 @@ As the requests were not sent with the workload identity, the requests will
 fail at the proxy - i.e. we couldn't even complete a TLS handshake with the
 proxy! Yaaaas. 💪
 
+You can also try sending a request with a different method. The backend is set
+up to only allow `GET` and `HEAD` requests. Everything else will be denied by
+Envoy's RBAC policy:
+
+```bash
+$ ./scripts/3-curl.sh HEAD
+Fetching external IP address ...
+Issuing curl ...
+HTTP/2 200
+content-type: text/plain
+date: Sun, 17 May 2020 19:33:38 GMT
+content-length: 251
+x-envoy-upstream-service-time: 1
+server: envoy
+
+$ ./scripts/3-curl.sh POST
+Fetching external IP address ...
+Issuing curl ...
+RBAC: access denied
+```
+
 At this point, we're done! We used SPIFFE and SPIRE to set up a PKI running in
 the cluster, attesting that our workloads were legit. We configured Envoy to
 tap into this by consuming the identities with SDS. We then issued a
@@ -215,6 +236,5 @@ down the node pool to size zero.
 
 Some things I'd like to prove out:
 
-- Backend's Envoy checking proxied x509 certificate of the client
 - Client workload running outside of K8s, on a Cloud provider using the
   appropriate attestors for that platform

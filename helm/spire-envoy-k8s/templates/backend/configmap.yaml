@@ -49,6 +49,26 @@ data:
                     route:
                       cluster: backend
               http_filters:
+              - name: envoy.filters.http.rbac
+                typed_config:
+                  "@type": type.googleapis.com/envoy.extensions.filters.http.rbac.v3.RBAC
+                  rules:
+                    action: ALLOW
+                    policies:
+                      "proxy":
+                        permissions:
+                        - or_rules:
+                            rules:
+                            - header:
+                                name: ":method"
+                                exact_match: "GET"
+                            - header:
+                                name: ":method"
+                                exact_match: "HEAD"
+                        principals:
+                        - authenticated:
+                            principal_name:
+                              exact: "spiffe://{{ .Values.spire.trust_domain }}/ns/proxy/sa/default"
               - name: envoy.filters.http.router
                 typed_config: {}
           transport_socket:
