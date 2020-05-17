@@ -14,8 +14,8 @@ spec:
     metadata:
       labels:
         app: proxy
-    annotations:
-      checksum/config: {{ include (print $.Template.BasePath "/proxy/configmap.yaml") . | sha256sum }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/proxy/configmap.yaml") . | sha256sum }}
     spec:
       containers:
       - name: envoy

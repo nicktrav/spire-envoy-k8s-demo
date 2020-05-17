@@ -215,7 +215,6 @@ down the node pool to size zero.
 
 Some things I'd like to prove out:
 
-- Envoy for the backend
 - Backend's Envoy checking proxied x509 certificate of the client
 - Client workload running outside of K8s, on a Cloud provider using the
   appropriate attestors for that platform

@@ -14,9 +14,33 @@ spec:
     metadata:
       labels:
         app: backend
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/backend/configmap.yaml") . | sha256sum }}
     spec:
       containers:
       - name: echo
         image: jmalloc/echo-server:0.1.0
+      - name: envoy
+        image: envoyproxy/envoy:v1.14.1
+        args:
+        - -c
+        - /etc/envoy/config.yaml
         ports:
-        - containerPort: 8080
+        - name: https
+          containerPort: 443
+          protocol: TCP
+        volumeMounts:
+        - name: spire-agent-socket
+          mountPath: /run/spire/sockets
+          readOnly: true
+        - name: envoy-config
+          mountPath: /etc/envoy
+          readOnly: false
+      volumes:
+      - name: spire-agent-socket
+        hostPath:
+          path: /run/spire/sockets
+          type: Directory
+      - name: envoy-config
+        configMap:
+          name: envoy

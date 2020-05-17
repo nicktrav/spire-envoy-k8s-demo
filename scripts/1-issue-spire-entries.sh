@@ -29,6 +29,14 @@ kubectl exec -n spire spire-server-0 -- \
     -selector k8s:sa:default \
     -dns example.com
 
+echo "Creating backend entry"
+kubectl exec -n spire spire-server-0 -- \
+    /opt/spire/bin/spire-server entry create \
+    -spiffeID spiffe://example.com/ns/backend/sa/default \
+    -parentID spiffe://example.com/ns/spire/sa/spire-agent \
+    -selector k8s:ns:backend \
+    -selector k8s:sa:default
+
 echo "Creating generator entry"
 kubectl exec -n spire spire-server-0 -- \
     /opt/spire/bin/spire-server entry create \
