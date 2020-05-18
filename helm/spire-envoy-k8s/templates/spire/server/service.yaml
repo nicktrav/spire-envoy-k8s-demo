@@ -3,7 +3,11 @@ kind: Service
 metadata:
   name: spire-server
   namespace: spire
+  annotations:
+    cloud.google.com/load-balancer-type: "Internal"
 spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.4.1.1
   ports:
   - name: grpc
     port: 8081

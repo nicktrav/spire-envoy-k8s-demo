@@ -6,3 +6,6 @@ spire:
 
 k8s:
   cluster_name: spire-envoy-k8s
+
+gcp:
+  project:

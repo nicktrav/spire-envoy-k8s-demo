@@ -9,6 +9,7 @@
 
 set -euo pipefail
 
+_project=$1
 _cluster_name=${cluster_name:-"spire-envoy-k8s"}
 
 echo "Creating SPIRE agent entry"
@@ -44,3 +45,12 @@ kubectl exec -n spire spire-server-0 -- \
     -parentID spiffe://example.com/ns/spire/sa/spire-agent \
     -selector k8s:ns:cert-gen \
     -selector k8s:sa:generator
+
+echo "Creating VM agent entry"
+kubectl exec -n spire spire-server-0 -- \
+    /opt/spire/bin/spire-server entry create \
+    -spiffeID spiffe://example.com/agents/vm1 \
+    -selector "gcp_iit:project-id:$_project" \
+    -selector gcp_iit:zone:us-central1-a \
+    -selector gcp_iit:instance-name:vm-1 \
+    -node

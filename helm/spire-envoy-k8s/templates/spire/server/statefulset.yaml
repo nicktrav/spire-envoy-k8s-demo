@@ -16,8 +16,8 @@ spec:
       namespace: spire
       labels:
         app: spire-server
-    annotations:
-      checksum/config: {{ include (print $.Template.BasePath "/spire/server/server-configmap.yaml") . | sha256sum }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/spire/server/server-configmap.yaml") . | sha256sum }}
     spec:
       serviceAccountName: spire-server
       containers:

@@ -37,6 +37,11 @@ data:
           }
         }
       }
+      NodeAttestor "gcp_iit" {
+        plugin_data {
+          projectid_whitelist = [{{ required "gcp.project is required" .Values.gcp.project | quote }}]
+        }
+      }
       NodeResolver "noop" {
         plugin_data {}
       }
